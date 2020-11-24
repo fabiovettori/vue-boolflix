@@ -37,20 +37,26 @@
         </header>
 
         <!-- vue container -->
-        <div id="app">
+        <div id="root">
             <div class="hero-section wrapper">
                 <div>
                     <h2>Benvenuto.</h2>
                     <h3>Milioni di film, serie TV e persone da scoprire. Esplora ora.</h3>
                     <div class="finder-input">
-                        <input type="text" name="" value="" placeholder="Cerca un film, serie tv, personagio...">
-                        <button>Search</button>
+                        <input type="text" name="" value="" placeholder="Cerca un film, serie tv, personagio..." v-model="userInput">
+                        <button @click="ajax()" @keyup.enter="ajax()">Search</button>
                     </div>
                 </div>
             </div>
 
             <div class="finder-output wrapper">
-
+                <ul class="card" v-for="output in userOutputContainer">
+                    <li><img src="" alt=""></li>
+                    <li>{{ output.title }}</li>
+                    <li>{{ output.original_title }}</li>
+                    <li>{{ output.original_language }}</li>
+                    <li>{{ output.vote_average }}</li>
+                </ul>
             </div>
         </div>
 

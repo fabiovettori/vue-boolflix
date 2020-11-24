@@ -141,6 +141,12 @@ button:hover {
 .finder-output {
     display: flex;
     flex-wrap: wrap;
-    background-color: lightgrey;
     height: 500px;
+}
+
+.card {
+    width: 200px;
+    height: 250px;
+    margin: 10px;
+    background-color: lightgrey;
 }
