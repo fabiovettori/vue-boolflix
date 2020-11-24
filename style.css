@@ -145,8 +145,37 @@ button:hover {
 }
 
 .card {
-    width: 200px;
-    height: 250px;
+    width: 150px;
     margin: 10px;
-    background-color: lightgrey;
+    cursor: pointer;
+    transition: all .3s ease;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card li {
+    font-size: 12px;
+    padding: 0;
+}
+
+.card li:nth-of-type(2) {
+    font-size: 14px;
+}
+
+.card li:nth-of-type(3) {
+    font-size: 10px;
+    color: rgba(0, 0, 0, 0.8)
+}
+
+.card li:nth-of-type(4), .card li:nth-of-type(5) {
+    /* text-transform: uppercase; */
+    font-size: 10px;
+    color: rgba(0, 0, 0, 0.8)
+}
+
+.card li img {
+    width: 100%;
+    border-radius: 5px;
 }

@@ -51,11 +51,11 @@
 
             <div class="finder-output wrapper">
                 <ul class="card" v-for="output in userOutputContainer">
-                    <li><img src="" alt=""></li>
+                    <li><img :src="'https://image.tmdb.org/t/p/w185/' + output.poster_path" alt=""></li>
                     <li>{{ output.title }}</li>
                     <li>{{ output.original_title }}</li>
-                    <li>{{ output.original_language }}</li>
-                    <li>{{ output.vote_average }}</li>
+                    <li>Language: {{ output.original_language }}</li>
+                    <li>Score: {{ output.vote_average }}</li>
                 </ul>
             </div>
         </div>
