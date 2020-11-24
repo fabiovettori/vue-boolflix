@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>The Movie Database (TMDb)</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <script src="https://kit.fontawesome.com/efa78a0868.js"></script>
+
+        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;700&display=swap">
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.0/axios.min.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <header>
+            <div class="wrapper">
+                <ul>
+                    <li><img class="logo" src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg" alt="The Movie Database (TMDb)"></li>
+                    <li><a href="#">Film</a></li>
+                    <li><a href="#">Serie TV</a></li>
+                    <li><a href="#">Persone</a></li>
+                    <li><a href="#">More</a></li>
+                </ul>
+
+                <ul>
+                    <li><a href="#"><span class="fas fa-plus"></span></a></li>
+                    <li class="language"><a href="#">IT</a></li>
+                    <li><a href="#">Accedi</a></li>
+                    <li><a href="#">Registrati a TMDb</a></li>
+                    <li class="finder"><a href="#"><img src="https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-28-search-blue-177462d06db81ff2a02aa022c1c0be5ba4200d7bd3f51091ed9298980e3a26a1.svg" alt=""></a></li>
+                </ul>
+            </div>
+        </header>
+
+        <!-- vue container -->
+        <div id="app">
+            <div class="hero-section wrapper">
+                <div>
+                    <h2>Benvenuto.</h2>
+                    <h3>Milioni di film, serie TV e persone da scoprire. Esplora ora.</h3>
+                    <div class="finder-input">
+                        <input type="text" name="" value="" placeholder="Cerca un film, serie tv, personagio...">
+                        <button>Search</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="finder-output wrapper">
+
+            </div>
+        </div>
+
+        <script src="main.js" charset="utf-8"></script>
+    </body>
+</html>
