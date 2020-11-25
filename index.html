@@ -52,7 +52,7 @@
                 </div>
             </div>
 
-            <h2 class="search-title wrapper">Search Results: Movies</h2>
+            <h2 class="search-title wrapper" v-if="checkMovies">Search Results: Movies</h2>
             <div class="finder-output movies wrapper">
                 <ul class="card" v-for="(output, i) in userOutputMovies">
                     <li>
@@ -64,18 +64,18 @@
                     </li>
                     <li class="lang">Language:
                         <div>
-                            <img class="flag" v-for="(flag, j) in flags" :src="flag.url" v-if="flagsFinder(output, j)" alt="">
+                            <img
+                            class="flag" :src="lang(output.original_language)"/>
                             <span>{{ output.original_language }}</span>
                         </div>
                     </li>
-                    <!-- <li>Score: {{ output.vote_average }}</li> -->
                     <li class="score">
                         <span :class="starsCounter(output, j)" v-for="j in 5"></span>
                     </li>
                 </ul>
             </div>
 
-            <h2 class="search-title wrapper">Search Results: TV Shows</h2>
+            <h2 class="search-title wrapper" v-if="checkTvShows">Search Results: TV Shows</h2>
             <div class="finder-output tvshows wrapper">
                 <ul class="card" v-for="(output, i) in userOutputTvShows">
                     <li>
@@ -87,7 +87,8 @@
                     </li>
                     <li class="lang">Language:
                         <div>
-                            <img class="flag" v-for="(flag, j) in flags" :src="flag.url" v-if="flagsFinder(output, j)" alt="">
+                            <img
+                            class="flag" :src="lang(output.original_language)"/>
                             <span>{{ output.original_language }}</span>
                         </div>
                     </li>

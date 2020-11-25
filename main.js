@@ -14,54 +14,36 @@
 // Suggerimento: scarichiamo una manciata di bandierine relative alle lingue che vogliamo gestire (attenzione che la lingua è "en", non "us" o "uk" :wink: ). Quindi andremo ad inserire solamente le bandierine che sappiamo di avere, mentre per le altre lingue di cui non abbiamo previsto la bandierina, lasciamo il codice della lingua testuale
 // 3- aggiungere ai risultati anche le serie tv. Attenzione che alcune chiavi per le serie tv sono diverse da quelle dei film, come ad esempio "title" per i film e "name" per le serie
 
-const api_root = 'https://api.themoviedb.org/3';
-const api_key = '321a2ab5febe4cd472acd62ae7fec177';
-const poster_size = ['w92','w154','w185','w342','w500','w780','original'];
-const poster_root = 'https://image.tmdb.org/t/p/' + poster_size[2];
-const flags_root = 'https://flagcdn.com/';
-
 var app = new Vue({
     el: '#root',
     data: {
+        api_root: 'https://api.themoviedb.org/3',
+        api_key: '321a2ab5febe4cd472acd62ae7fec177',
+        poster_size: ['w92','w154','w185','w342','w500','w780','original'],
+        poster_root: 'https://image.tmdb.org/t/p/' + 'w185',
+        flags_root: 'https://flagcdn.com/',
         userInput: '',
         userOutputMovies: [],
         userOutputTvShows: [],
-        flags: [
-            {
-                lang: 'it',
-                url: this.lang(it),//italy
-            },
-            {
-                lang: 'de',
-                url: this.lang(de),//Germany
-            },
-            {
-                lang: 'es',
-                url: this.lang(es),//Spain
-            },
-            {
-                lang: 'en',
-                url: this.lang(gb),//UK
-            },
-            {
-                lang: 'fr',
-                url: this.lang(fr),//France
-            },
-            {
-                lang: 'usa',
-                url: this.lang(us),//USA
-            }
-        ]
+        checkMovies: false,
+        checkTvShows: false
     },
     mounted: function(){
-        // this.ajax()
 
-        // this.lang(it)
     },
     methods: {
         lang: function(language){
-            var lang = language;
-            return flags_root + lang + '.svg'
+
+            var flag = language;
+
+            // flag che cambiano tra language e baniderina
+            if (language == 'en') {
+                flag = 'gb';
+            } else if (language == 'ja'){
+                flag = 'jp';
+            }
+
+            return this.flags_root + flag + '.svg';
         },
         ajax: function(){
             // devo passare nella API sempre
@@ -79,24 +61,28 @@ var app = new Vue({
 
             // movies
             let self = this;
-            axios.get(api_root + '/search/movie', {
+            axios.get(self.api_root + '/search/movie', {
                 params: {
-                    api_key: api_key,
+                    api_key: self.api_key,
                     query: self.userInput
                 }
             }).then(function(answerMovies){
+
+                self.checkMovies = true;
 
                 console.log(answerMovies.data.results);
                 self.userOutputMovies = answerMovies.data.results
             });
 
             // tv shows
-            axios.get(api_root + '/search/tv', {
+            axios.get(self.api_root + '/search/tv', {
                 params: {
-                    api_key: api_key,
+                    api_key: self.api_key,
                     query: self.userInput
                 }
             }).then(function(answerTvShows){
+
+                self.checkTvShows = true;
 
                 console.log(answerTvShows.data.results);
                 self.userOutputTvShows = answerTvShows.data.results
@@ -114,15 +100,6 @@ var app = new Vue({
                 return 'fas fa-star'
             } else {
                 return 'far fa-star'
-            }
-        },
-        flagsFinder: function(item, j){
-
-            let langMovie = item.original_language
-            // console.log(langMovie);
-
-            if (this.flags[j].lang.includes(langMovie)) {
-                return true
             }
         }
     }
