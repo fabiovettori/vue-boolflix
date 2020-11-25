@@ -152,7 +152,16 @@ button:hover {
 .finder-output {
     display: flex;
     flex-wrap: wrap;
-    height: 500px;
+}
+
+.search-title {
+    color: #000000;
+    font-size: 24px;
+    /* display: none; */
+}
+
+.search-title.active {
+    display: block;
 }
 
 .card {
@@ -183,6 +192,11 @@ button:hover {
     border-radius: 5px;
     cursor: pointer;
     transition: all .3s ease;
+}
+
+.card li > img.no_poster {
+    background-color: #dbdbdb;
+    height: 255px;
 }
 
 .card li img:hover {

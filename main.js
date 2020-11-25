@@ -14,12 +14,17 @@
 // Suggerimento: scarichiamo una manciata di bandierine relative alle lingue che vogliamo gestire (attenzione che la lingua è "en", non "us" o "uk" :wink: ). Quindi andremo ad inserire solamente le bandierine che sappiamo di avere, mentre per le altre lingue di cui non abbiamo previsto la bandierina, lasciamo il codice della lingua testuale
 // 3- aggiungere ai risultati anche le serie tv. Attenzione che alcune chiavi per le serie tv sono diverse da quelle dei film, come ad esempio "title" per i film e "name" per le serie
 
+const api_root = 'http://api.themoviedb.org/3';
+const api_key = '321a2ab5febe4cd472acd62ae7fec177';
+const poster_size = ['w92','w154','w185','w342','w500','w780','original'];
+const poster_root = 'https://image.tmdb.org/t/p/' + poster_size[2];
 
 var app = new Vue({
     el: '#root',
     data: {
         userInput: '',
-        userOutputContainer: [],
+        userOutputMovies: [],
+        userOutputTvShows: [],
         flags: [
             {
                 lang: 'it',
@@ -44,11 +49,11 @@ var app = new Vue({
             {
                 lang: 'usa',
                 url: 'https://flagcdn.com/us.svg',//USA
-            },
+            }
         ]
     },
     mounted: function(){
-        this.ajax()
+        // this.ajax()
     },
     methods: {
         ajax: function(){
@@ -64,24 +69,56 @@ var app = new Vue({
             // [parametri da concatenare]
 
             // N.B. Devo quindi prendere url iniziale ed andare a concatenere i paramtri cosi come è richiesto dalla API
+
+            // movies
             let self = this;
-            axios.get('http://api.themoviedb.org/3/search/movie', {
+            axios.get(api_root + '/search/movie', {
                 params: {
-                    api_key: '321a2ab5febe4cd472acd62ae7fec177',
+                    api_key: api_key,
                     query: self.userInput
                 }
-            }).then(function(answer){
+            }).then(function(answerMovies){
 
-                console.log(answer.data.results);
-                self.userOutputContainer = answer.data.results
+                console.log(answerMovies.data.results);
+                self.userOutputMovies = answerMovies.data.results
+            });
+
+            // tv shows
+            axios.get(api_root + '/search/tv', {
+                params: {
+                    api_key: api_key,
+                    query: self.userInput
+                }
+            }).then(function(answerTvShows){
+
+                console.log(answerTvShows.data.results);
+                self.userOutputTvShows = answerTvShows.data.results
             });
         },
         starsMovie: function(i, j){
+            let container = this.userOutputMovies;
+            this.starsCounter(i, j, container);
+        },
+        flagsMovie: function(i, j){
+            let container = this.userOutputMovies;
+            this.flagsCounter(i, j, container);
+        },
+
+        starsTvShow: function(i, j){
+            let container = this.userOutputTvShows;
+            this.starsCounter(i, j, container);
+        },
+        flagsTvShow: function(i, j){
+            let container = this.userOutputTvShows;
+            this.flagsCounter(i, j, container);
+        },
+
+        starsCounter: function(i, j, container){
             // inserire qui la base attraverso la quale rappresentare il punteggio del film
             let baseOfScore = 5; //base 5
 
             // approssimazione del valore in base definita (baseOfScore) arrotondato al valore intro ad esso più vicino
-            let scoreBaseFive = Math.round(this.userOutputContainer[i].vote_average * (baseOfScore * 0.1))
+            let scoreBaseFive = Math.round(container[i].vote_average * (baseOfScore * 0.1))
             // console.log(scoreBaseFive);
 
             if (scoreBaseFive >= j || scoreBaseFive == baseOfScore) {
@@ -90,14 +127,13 @@ var app = new Vue({
                 return 'far fa-star'
             }
         },
-        flagsMovie: function(i, j){
-
-            let langMovie = this.userOutputContainer[i].original_language
-            console.log(langMovie);
+        flagsCounter: function(i, j, container){
+            let langMovie = container[i].original_language
+            // console.log(langMovie);
 
             if (this.flags[j].lang.includes(langMovie)) {
                 return true
             }
-        }
+        },
     }
 });

@@ -52,10 +52,11 @@
                 </div>
             </div>
 
-            <div class="finder-output wrapper">
-                <ul class="card" v-for="(output, i) in userOutputContainer">
+            <h2 class="search-title wrapper">Search Results: Movies</h2>
+            <div class="finder-output movies wrapper">
+                <ul class="card" v-for="(output, i) in userOutputMovies">
                     <li>
-                        <img :src="'https://image.tmdb.org/t/p/w185/' + output.poster_path" :alt="output.title">
+                        <img :src="output.poster_path != null ? ('https://image.tmdb.org/t/p/w185/' + output.poster_path) : 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg'" :alt="output.title" :class="output.poster_path == null ? 'no_poster' : ''">
                     </li>
                     <li>
                         <h4>{{ output.title }}</h4>
@@ -70,6 +71,29 @@
                     <!-- <li>Score: {{ output.vote_average }}</li> -->
                     <li class="score">
                         <span :class="starsMovie(i, j)" v-for="j in 5"></span>
+                    </li>
+                </ul>
+            </div>
+
+            <h2 class="search-title wrapper">Search Results: TV Shows</h2>
+            <div class="finder-output tvshows wrapper">
+                <ul class="card" v-for="(output, i) in userOutputTvShows">
+                    <li>
+                        <img :src="output.poster_path != null ? ('https://image.tmdb.org/t/p/w185/' + output.poster_path) : 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg'" :alt="output.title" :class="output.poster_path == null ? 'no_poster' : ''">
+                    </li>
+                    <li>
+                        <h4>{{ output.name }}</h4>
+                        <h5>({{ output.original_name }})</h5>
+                    </li>
+                    <li class="lang">Language:
+                        <div>
+                            <img class="flag" v-for="(flag, j) in flags" :src="flag.url" v-if="flagsTvShow(i, j)" alt="">
+                            <span>{{ output.original_language }}</span>
+                        </div>
+                    </li>
+                    <!-- <li>Score: {{ output.vote_average }}</li> -->
+                    <li class="score">
+                        <span :class="starsTvShow(i, j)" v-for="j in 5"></span>
                     </li>
                 </ul>
             </div>
