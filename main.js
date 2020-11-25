@@ -18,6 +18,7 @@ const api_root = 'https://api.themoviedb.org/3';
 const api_key = '321a2ab5febe4cd472acd62ae7fec177';
 const poster_size = ['w92','w154','w185','w342','w500','w780','original'];
 const poster_root = 'https://image.tmdb.org/t/p/' + poster_size[2];
+const flags_root = 'https://flagcdn.com/';
 
 var app = new Vue({
     el: '#root',
@@ -28,34 +29,40 @@ var app = new Vue({
         flags: [
             {
                 lang: 'it',
-                url: 'https://flagcdn.com/it.svg',//italy
+                url: this.lang(it),//italy
             },
             {
                 lang: 'de',
-                url: 'https://flagcdn.com/de.svg',//Germany
+                url: this.lang(de),//Germany
             },
             {
                 lang: 'es',
-                url: 'https://flagcdn.com/es.svg',//Spain
+                url: this.lang(es),//Spain
             },
             {
                 lang: 'en',
-                url: 'https://flagcdn.com/gb.svg',//UK
+                url: this.lang(gb),//UK
             },
             {
                 lang: 'fr',
-                url: 'https://flagcdn.com/fr.svg',//France
+                url: this.lang(fr),//France
             },
             {
                 lang: 'usa',
-                url: 'https://flagcdn.com/us.svg',//USA
+                url: this.lang(us),//USA
             }
         ]
     },
     mounted: function(){
         // this.ajax()
+
+        // this.lang(it)
     },
     methods: {
+        lang: function(language){
+            var lang = language;
+            return flags_root + lang + '.svg'
+        },
         ajax: function(){
             // devo passare nella API sempre
             // - in questo caso la chiamata deve essere fatta in GET
@@ -95,12 +102,12 @@ var app = new Vue({
                 self.userOutputTvShows = answerTvShows.data.results
             });
         },
-        starsMovie: function(i, j){
+        starsCounter: function(item, j){
             // inserire qui la base attraverso la quale rappresentare il punteggio del film
             let baseOfScore = 5; //base 5
 
             // approssimazione del valore in base definita (baseOfScore) arrotondato al valore intro ad esso più vicino
-            let scoreBaseFive = Math.round(this.userOutputMovies[i].vote_average * (baseOfScore * 0.1))
+            let scoreBaseFive = Math.round(item.vote_average * (baseOfScore * 0.1))
             // console.log(scoreBaseFive);
 
             if (scoreBaseFive >= j || scoreBaseFive == baseOfScore) {
@@ -109,9 +116,9 @@ var app = new Vue({
                 return 'far fa-star'
             }
         },
-        flagsMovie: function(i, j){
+        flagsFinder: function(item, j){
 
-            let langMovie = this.userOutputMovies[i].original_language
+            let langMovie = item.original_language
             // console.log(langMovie);
 
             if (this.flags[j].lang.includes(langMovie)) {

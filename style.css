@@ -157,7 +157,7 @@ button:hover {
 .search-title {
     color: #000000;
     font-size: 24px;
-    /* display: none; */
+    display: none;
 }
 
 .search-title.active {
