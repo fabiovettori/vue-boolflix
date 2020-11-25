@@ -96,29 +96,11 @@ var app = new Vue({
             });
         },
         starsMovie: function(i, j){
-            let container = this.userOutputMovies;
-            this.starsCounter(i, j, container);
-        },
-        flagsMovie: function(i, j){
-            let container = this.userOutputMovies;
-            this.flagsCounter(i, j, container);
-        },
-
-        starsTvShow: function(i, j){
-            let container = this.userOutputTvShows;
-            this.starsCounter(i, j, container);
-        },
-        flagsTvShow: function(i, j){
-            let container = this.userOutputTvShows;
-            this.flagsCounter(i, j, container);
-        },
-
-        starsCounter: function(i, j, container){
             // inserire qui la base attraverso la quale rappresentare il punteggio del film
             let baseOfScore = 5; //base 5
 
             // approssimazione del valore in base definita (baseOfScore) arrotondato al valore intro ad esso più vicino
-            let scoreBaseFive = Math.round(container[i].vote_average * (baseOfScore * 0.1))
+            let scoreBaseFive = Math.round(this.userOutputMovies[i].vote_average * (baseOfScore * 0.1))
             // console.log(scoreBaseFive);
 
             if (scoreBaseFive >= j || scoreBaseFive == baseOfScore) {
@@ -127,13 +109,14 @@ var app = new Vue({
                 return 'far fa-star'
             }
         },
-        flagsCounter: function(i, j, container){
-            let langMovie = container[i].original_language
+        flagsMovie: function(i, j){
+
+            let langMovie = this.userOutputMovies[i].original_language
             // console.log(langMovie);
 
             if (this.flags[j].lang.includes(langMovie)) {
                 return true
             }
-        },
+        }
     }
 });
