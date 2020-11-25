@@ -21,6 +21,16 @@ h3 {
     font-size: 32px;
 }
 
+h4 {
+    font-size: 14px;
+}
+
+h5 {
+    font-size: 12px;
+    font-weight: 300;
+    color: rgba(0, 0, 0, 0.6);
+}
+
 /* header */
 header {
     height: 80px;
@@ -131,6 +141,7 @@ button:hover {
     padding: 50px;
     display: flex;
     align-items: center;
+    margin-bottom: 20px;
 }
 
 .hero-section div {
@@ -145,14 +156,12 @@ button:hover {
 }
 
 .card {
-    width: 150px;
+    width: 170px;
     margin: 10px;
-    cursor: pointer;
-    transition: all .3s ease;
-}
-
-.card:hover {
-    transform: scale(1.05);
+    height: 360px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .card li {
@@ -164,18 +173,49 @@ button:hover {
     font-size: 14px;
 }
 
-.card li:nth-of-type(3) {
+.card li:nth-of-type(3), .card li:nth-of-type(4), .card li:nth-of-type(5) {
     font-size: 10px;
-    color: rgba(0, 0, 0, 0.8)
+    color: rgba(0, 0, 0, 0.6);
 }
 
-.card li:nth-of-type(4), .card li:nth-of-type(5) {
-    /* text-transform: uppercase; */
-    font-size: 10px;
-    color: rgba(0, 0, 0, 0.8)
-}
-
-.card li img {
+.card li > img {
     width: 100%;
     border-radius: 5px;
+    cursor: pointer;
+    transition: all .3s ease;
+}
+
+.card li img:hover {
+    transform: scale(1.04);
+}
+
+.card li:last-of-type {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.card .score, .card .lang {
+    margin-top: 5px;
+}
+
+.card .fa-star {
+    font-size: 16px;
+    color: #064b70;
+    margin-right: 5px;
+}
+
+.card .flag {
+    width: 30px;
+    vertical-align: middle;
+}
+
+.card .lang {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card .lang span{
+    text-transform: uppercase;
+    vertical-align: middle;
 }

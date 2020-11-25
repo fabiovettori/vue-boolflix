@@ -20,7 +20,32 @@ var app = new Vue({
     data: {
         userInput: '',
         userOutputContainer: [],
-        posterCard: 'https://image.tmdb.org/t/p/w185/'
+        flags: [
+            {
+                lang: 'it',
+                url: 'https://flagcdn.com/it.svg',//italy
+            },
+            {
+                lang: 'de',
+                url: 'https://flagcdn.com/de.svg',//Germany
+            },
+            {
+                lang: 'es',
+                url: 'https://flagcdn.com/es.svg',//Spain
+            },
+            {
+                lang: 'en',
+                url: 'https://flagcdn.com/gb.svg',//UK
+            },
+            {
+                lang: 'fr',
+                url: 'https://flagcdn.com/fr.svg',//France
+            },
+            {
+                lang: 'usa',
+                url: 'https://flagcdn.com/us.svg',//USA
+            },
+        ]
     },
     mounted: function(){
         this.ajax()
@@ -50,6 +75,29 @@ var app = new Vue({
                 console.log(answer.data.results);
                 self.userOutputContainer = answer.data.results
             });
+        },
+        starsMovie: function(i, j){
+            // inserire qui la base attraverso la quale rappresentare il punteggio del film
+            let baseOfScore = 5; //base 5
+
+            // approssimazione del valore in base definita (baseOfScore) arrotondato al valore intro ad esso più vicino
+            let scoreBaseFive = Math.round(this.userOutputContainer[i].vote_average * (baseOfScore * 0.1))
+            // console.log(scoreBaseFive);
+
+            if (scoreBaseFive >= j || scoreBaseFive == baseOfScore) {
+                return 'fas fa-star'
+            } else {
+                return 'far fa-star'
+            }
+        },
+        flagsMovie: function(i, j){
+
+            let langMovie = this.userOutputContainer[i].original_language
+            console.log(langMovie);
+
+            if (this.flags[j].lang.includes(langMovie)) {
+                return true
+            }
         }
     }
 });

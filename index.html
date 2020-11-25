@@ -4,6 +4,8 @@
         <meta charset="utf-8">
         <title>The Movie Database (TMDb)</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="The Movie Database (TMDb) is a popular, user editable database for movies and TV shows.">
+        <link rel="icon" type="image/png" sizes="16x16" href="https://www.themoviedb.org/assets/2/favicon-16x16-b362d267873ce9c5a39f686a11fe67fec2a72ed25fa8396c11b71aa43c938b11.png">
 
         <script src="https://kit.fontawesome.com/efa78a0868.js"></script>
 
@@ -41,21 +43,34 @@
             <div class="hero-section wrapper">
                 <div>
                     <h2>Benvenuto.</h2>
-                    <h3>Milioni di film, serie TV e persone da scoprire. Esplora ora.</h3>
+                    <h3>Milioni di film, serie TV e persone da scoprire. Esplora ora.
+                    </h3>
                     <div class="finder-input">
-                        <input type="text" name="" value="" placeholder="Cerca un film, serie tv, personagio..." v-model="userInput">
-                        <button @click="ajax()" @keyup.enter="ajax()">Search</button>
+                        <input type="text" name="" value="" placeholder="Cerca un film, serie tv, personagio..." v-model="userInput" @keyup.enter="ajax()">
+                        <button @click="ajax()">Search</button>
                     </div>
                 </div>
             </div>
 
             <div class="finder-output wrapper">
-                <ul class="card" v-for="output in userOutputContainer">
-                    <li><img :src="'https://image.tmdb.org/t/p/w185/' + output.poster_path" alt=""></li>
-                    <li>{{ output.title }}</li>
-                    <li>{{ output.original_title }}</li>
-                    <li>Language: {{ output.original_language }}</li>
-                    <li>Score: {{ output.vote_average }}</li>
+                <ul class="card" v-for="(output, i) in userOutputContainer">
+                    <li>
+                        <img :src="'https://image.tmdb.org/t/p/w185/' + output.poster_path" :alt="output.title">
+                    </li>
+                    <li>
+                        <h4>{{ output.title }}</h4>
+                        <h5>({{ output.original_title }})</h5>
+                    </li>
+                    <li class="lang">Language:
+                        <div>
+                            <img class="flag" v-for="(flag, j) in flags" :src="flag.url" v-if="flagsMovie(i, j)" alt="">
+                            <span>{{ output.original_language }}</span>
+                        </div>
+                    </li>
+                    <!-- <li>Score: {{ output.vote_average }}</li> -->
+                    <li class="score">
+                        <span :class="starsMovie(i, j)" v-for="j in 5"></span>
+                    </li>
                 </ul>
             </div>
         </div>
