@@ -14,7 +14,7 @@
 // Suggerimento: scarichiamo una manciata di bandierine relative alle lingue che vogliamo gestire (attenzione che la lingua è "en", non "us" o "uk" :wink: ). Quindi andremo ad inserire solamente le bandierine che sappiamo di avere, mentre per le altre lingue di cui non abbiamo previsto la bandierina, lasciamo il codice della lingua testuale
 // 3- aggiungere ai risultati anche le serie tv. Attenzione che alcune chiavi per le serie tv sono diverse da quelle dei film, come ad esempio "title" per i film e "name" per le serie
 
-const api_root = 'http://api.themoviedb.org/3';
+const api_root = 'https://api.themoviedb.org/3';
 const api_key = '321a2ab5febe4cd472acd62ae7fec177';
 const poster_size = ['w92','w154','w185','w342','w500','w780','original'];
 const poster_root = 'https://image.tmdb.org/t/p/' + poster_size[2];
