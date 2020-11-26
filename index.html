@@ -18,41 +18,53 @@
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <header>
-            <div class="wrapper">
-                <ul>
-                    <li><img class="logo" src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg" alt="The Movie Database (TMDb)"></li>
-                    <li><a href="#">Film</a></li>
-                    <li><a href="#">Serie TV</a></li>
-                    <li><a href="#">Persone</a></li>
-                    <li><a href="#">More</a></li>
-                </ul>
-
-                <ul>
-                    <li><a href="#"><span class="fas fa-plus"></span></a></li>
-                    <li class="language"><a href="#">IT</a></li>
-                    <li><a href="#">Accedi</a></li>
-                    <li><a href="#">Registrati a TMDb</a></li>
-                    <li class="finder"><a href="#"><img src="https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-28-search-blue-177462d06db81ff2a02aa022c1c0be5ba4200d7bd3f51091ed9298980e3a26a1.svg" alt=""></a></li>
-                </ul>
-            </div>
-        </header>
 
         <!-- vue container -->
         <div id="root">
+            <header ref="header" :class="headerAnimation == true ? 'hide' : ''">
+                <div class="wrapper">
+                    <ul>
+                        <li><img class="logo" src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg" alt="The Movie Database (TMDb)"></li>
+                        <li><a href="#">Film</a></li>
+                        <li><a href="#">Serie TV</a></li>
+                        <li><a href="#">Persone</a></li>
+                        <li><a href="#">More</a></li>
+                    </ul>
+
+                    <ul>
+                        <li><a href="#"><span class="fas fa-plus"></span></a></li>
+                        <li class="language"><a href="#">IT</a></li>
+                        <li><a href="#">Accedi</a></li>
+                        <li><a href="#">Registrati a TMDb</a></li>
+                        <li class="finder"><a href="#"><img :src="toggleBtn == true ? 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-599-menu-close-7400e9a2ea92ad8d7cccf18d1ea34cd690790638a6e7768922eaef6e07109723.svg' : 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-28-search-blue-177462d06db81ff2a02aa022c1c0be5ba4200d7bd3f51091ed9298980e3a26a1.svg'" alt="search" @click="toggleSearch" :class="toggleBtn == true ? 'active' : ''"></a></li>
+                    </ul>
+                </div>
+
+                <div class="toggle-search" v-if="toggleBtn == true" :class="headerAnimation == true ? 'hide' : ''">
+                    <input type="text" class="wrapper" placeholder="Cerca un film, serie tv, personagio..." v-model="userInput" ref="input" @keyup.enter="ajax()">
+                </div>
+            </header>
+
             <div class="hero-section wrapper">
                 <div>
                     <h2>Benvenuto.</h2>
                     <h3>Milioni di film, serie TV e persone da scoprire. Esplora ora.
                     </h3>
                     <div class="finder-input">
-                        <input type="text" name="" value="" placeholder="Cerca un film, serie tv, personagio..." v-model="userInput" @keyup.enter="ajax()">
+                        <input type="text" name="" value="" placeholder="Cerca un film, serie tv, personagio..." v-model="userInput" ref="input" @keyup.enter="ajax()">
                         <button @click="ajax()">Search</button>
+
+                        <!-- Helper -->
+                        <div class="bot" :class="botHelper == true? 'active' : ''">
+                            <p>Howdy 👋, do you need help? sorry these special characters are not allowed:</p>
+                            <strong>#, @, ; , (double space)</strong>
+                            <span @click="closeBtn()" class="bot-close btn">&#10005;</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <h2 class="search-title wrapper" v-if="checkMovies">Search Results: Movies</h2>
+            <h2 class="search-title wrapper" v-if="checkMovies">Search Results: Movies - <span>{{ userOutputMovies.length }} results for "{{ userOutputString }}"</span> </h2>
             <div class="finder-output movies wrapper">
                 <ul class="card" v-for="(output, i) in userOutputMovies">
                     <li>
@@ -75,7 +87,7 @@
                 </ul>
             </div>
 
-            <h2 class="search-title wrapper" v-if="checkTvShows">Search Results: TV Shows</h2>
+            <h2 class="search-title wrapper" v-if="checkTvShows">Search Results: TV Shows - <span>{{ userOutputTvShows.length }} results for "{{ userOutputString }}"</span></h2>
             <div class="finder-output tvshows wrapper">
                 <ul class="card" v-for="(output, i) in userOutputTvShows">
                     <li>
@@ -98,6 +110,43 @@
                 </ul>
             </div>
         </div>
+
+        <footer>
+            <div class="wrapper">
+                <ul>
+                    <li><a href="#"><img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3ded904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg" alt=""></a></li>
+                    <button>unisciti al gruppo</button>
+                </ul>
+                <ul>
+                    <li>le basi</li>
+                    <li><a href="#">Info su TMDb</a></li>
+                    <li><a href="#">Contattaci</a></li>
+                    <li><a href="#">Forum di supporto</a></li>
+                    <li><a href="#">API</a></li>
+                    <li><a href="#">System Status</a></li>
+                </ul>
+                <ul>
+                    <li>mettersi in gioco</li>
+                    <li><a href="#">Guida Contributi</a></li>
+                    <li><a href="#">Applicazioni di terze parti</a></li>
+                    <li><a href="#">Aggiungi nuovo film</a></li>
+                    <li><a href="#">Aggiungi nuova serie TV</a></li>
+                </ul>
+                <ul>
+                    <li>community</li>
+                    <li><a href="#">linee guida</a></li>
+                    <li><a href="#">discussioni</a></li>
+                    <li><a href="#">classifica</a></li>
+                    <li><a href="#">twitter</a></li>
+                </ul>
+                <ul>
+                    <li>legale</li>
+                    <li><a href="#">Condizioni d'uso</a></li>
+                    <li><a href="#">Termini d'uso delle API</a></li>
+                    <li><a href="#">Politica Privacy</a></li>
+                </ul>
+            </div>
+        </footer>
 
         <script src="main.js" charset="utf-8"></script>
     </body>

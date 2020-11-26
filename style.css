@@ -1,4 +1,26 @@
 /* general settings */
+/* scrollbar */
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -11,6 +33,13 @@ body {
 
 h2, h3 {
     color: #ffffff;
+}
+
+h4, h5 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
 }
 
 h2 {
@@ -33,20 +62,34 @@ h5 {
 
 /* header */
 header {
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
     height: 80px;
     background-color: #032541;
     display: flex;
+    transition: all .3s ease;
 }
 
-header > * {
+header.hide {
+    top: -80px;
+}
+
+header > div {
     display: flex;
-    justify-content: space-between;
-    width: 50%;
+    width: 100%;
 }
 
 header div ul {
     display: flex;
     align-items: center;
+    flex-grow: 1;
+}
+
+header div ul:last-of-type {
+    justify-content: flex-end;
 }
 
 li {
@@ -80,47 +123,8 @@ header .finder img {
     height: 40px;
 }
 
-.finder-input {
-    position: relative;
-    text-align: center;
-}
-
-input {
-    width: 100%;
-    height: 50px;
-    border: none;
-    border-radius: 25px;
-    padding: 0 110px 0 20px;
-    font-size: 16px;
-    margin-top: 50px;
-}
-
-input:focus {
-    outline: none;
-}
-
-input::placeholder {
-    font-size: 16px;
-    font-weight: 500;
-}
-
-button {
-    font-size: 16px;
-    width: 100px;
-    height: 50px;
-    border-radius: 50px;
-    border: none;
-    font-weight: 700;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(270deg, rgba(3,183,222,1) 0%, rgba(29,212,171,1) 80%);
-    color: #ffffff;
-    cursor: pointer;
-}
-
-button:hover {
-    color: #032541;
+header .finder img.active {
+    filter: invert(1);
 }
 
 .logo {
@@ -128,11 +132,100 @@ button:hover {
 }
 
 .wrapper {
-    width: 70%;
+    max-width: 1550px;
     margin: auto;
 }
 
+.toggle-search {
+    position: fixed;
+    background-color: #ffffff;
+    height: 40px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    top: 80px;
+    width: 100%;
+    transition: all .3s ease;
+}
+
+.toggle-search input {
+    width: 100%;
+    border: none;
+    background-image: url('https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-28-search-blue-177462d06db81ff2a02aa022c1c0be5ba4200d7bd3f51091ed9298980e3a26a1.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    filter: grayscale();
+}
+
+.toggle-search input::placeholder {
+    padding-left: 20px;
+}
+
+.toggle-search input:focus {
+    outline: none;
+}
+
+.toggle-search.hide {
+    top: 0;
+}
+
 /* hero section */
+.hero-section .bot {
+    position: absolute;
+    bottom: 80px;
+    left: 0px;
+    background-color: white;
+    padding: 35px 20px 20px 20px;
+    width: 270px;
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: 100;
+    border-radius: 5px;
+    box-shadow: 0 1px 24px rgba(45,62,80,0.12);
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .3s ease;
+}
+
+.hero-section .bot.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+.hero-section .bot::before {
+    content: '';
+    background-image: url(https://img.icons8.com/cotton/2x/popcorn.png);
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    background-size: contain;
+    position: absolute;
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    top: -35px;
+    transform: rotate(-20deg);
+    left: calc(50% - 40px);
+}
+
+.hero-section .bot::after {
+    content: '';
+    position: absolute;
+    background-color: #ffffff;
+    width: 20px;
+    height: 20px;
+    bottom: -10px;
+    left: 20px;
+    transform: rotate(45deg);
+}
+
+.hero-section .bot .bot-close {
+    position: absolute;
+    color: rgba(0, 0, 0, 0.5);
+    font-weight: lighter;
+    font-size: 25px;
+    right: 15px;
+    top: 10px;
+    cursor: pointer;
+}
+
 .hero-section {
     height: 500px;
     background-image: url('https://image.tmdb.org/t/p/w1920_and_h600_multi_faces_filter(duotone,032541,01b4e4)/zqkmTXzjkAgXmEWLRsY4UpTWCeo.jpg');
@@ -148,10 +241,61 @@ button:hover {
     width: 100%;
 }
 
+.finder-input {
+    position: relative;
+    text-align: center;
+}
+
+.hero-section input {
+    width: 100%;
+    height: 50px;
+    border: none;
+    border-radius: 25px;
+    padding: 0 110px 0 20px;
+    font-size: 16px;
+    margin-top: 50px;
+}
+
+.hero-section input:focus {
+    outline: none;
+}
+
+.hero-section input::placeholder {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.hero-section button {
+    font-size: 16px;
+    width: 100px;
+    height: 50px;
+    border-radius: 50px;
+    border: none;
+    font-weight: 700;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(270deg, rgba(3,183,222,1) 0%, rgba(29,212,171,1) 80%);
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.hero-section button:hover {
+    color: #032541;
+}
+
+button:focus {
+    outline: none;
+}
+
 /* output */
 .finder-output {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    margin-top: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-auto-rows: minmax(350px, auto);
+    grid-gap: 12px;
+    min-height: calc((100vh - 310px - 520px - 10px) / 2);
 }
 
 .search-title {
@@ -159,8 +303,16 @@ button:hover {
     font-size: 24px;
 }
 
+.search-title:not(:first-of-type) {
+    margin-top: 30px;
+}
+
+.search-title span{
+    font-weight: 500;
+    font-size: 18px;
+}
+
 .card {
-    width: 170px;
     margin: 10px;
     height: 360px;
     display: flex;
@@ -227,4 +379,59 @@ button:hover {
 .card .lang span{
     text-transform: uppercase;
     vertical-align: middle;
+}
+
+/* footer */
+footer {
+    height: 300px;
+    background-color: #032541;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+footer button {
+    padding: 10px 15px;
+    border-radius: 5px;
+    background-color: #ffffff;
+    color: #01b4e4;
+    font-size: 17px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+}
+
+footer .wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+footer img {
+    width: 120px;
+    height: 100px;
+}
+
+footer ul {
+    padding: 15px;
+}
+
+footer ul:first-of-type li {
+    text-align: right;
+}
+
+footer ul li:first-of-type {
+    font-size: 20px;
+    color: #ffffff;
+    text-transform: uppercase;
+    padding-left: 5px;
+}
+
+footer ul li:not( :first-of-type) {
+    font-size: 17px;
+    color: red;
+    text-transform: capitalize;
+    font-weight: 300;
+    padding: 5px;
 }

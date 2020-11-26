@@ -20,16 +20,20 @@ var app = new Vue({
         api_root: 'https://api.themoviedb.org/3',
         api_key: '321a2ab5febe4cd472acd62ae7fec177',
         poster_size: ['w92','w154','w185','w342','w500','w780','original'],
-        poster_root: 'https://image.tmdb.org/t/p/' + 'w185',
+        poster_root: `https://image.tmdb.org/t/p/' + ${this.poster_root}`,
         flags_root: 'https://flagcdn.com/',
         userInput: '',
+        userOutputString: '',
         userOutputMovies: [],
         userOutputTvShows: [],
         checkMovies: false,
-        checkTvShows: false
+        checkTvShows: false,
+        botHelper: null,
+        toggleBtn: false,
+        headerAnimation: false
     },
     mounted: function(){
-
+        this.headerOnScroll(event)
     },
     methods: {
         lang: function(language){
@@ -59,34 +63,54 @@ var app = new Vue({
 
             // N.B. Devo quindi prendere url iniziale ed andare a concatenere i paramtri cosi come è richiesto dalla API
 
-            // movies
-            let self = this;
-            axios.get(self.api_root + '/search/movie', {
-                params: {
-                    api_key: self.api_key,
-                    query: self.userInput
+            const array = ['#', '@', ';',  '  '];
+            let check = false;
+
+            for (var i = 0; i < array.length; i++) {
+                if (this.userInput.includes(array[i])) {
+                    check = true;
                 }
-            }).then(function(answerMovies){
+            }
 
-                self.checkMovies = true;
+            if (check) {
+                this.botHelper = true;
+            } else {
 
-                console.log(answerMovies.data.results);
-                self.userOutputMovies = answerMovies.data.results
-            });
+                this.userOutputString = this.$refs["input"].value;
 
-            // tv shows
-            axios.get(self.api_root + '/search/tv', {
-                params: {
-                    api_key: self.api_key,
-                    query: self.userInput
-                }
-            }).then(function(answerTvShows){
+                // movies
+                let self = this;
+                axios.get(self.api_root + '/search/movie', {
+                    params: {
+                        api_key: self.api_key,
+                        query: self.userInput.trim()
+                    }
+                }).then(function(answerMovies){
 
-                self.checkTvShows = true;
+                    self.checkMovies = true;
 
-                console.log(answerTvShows.data.results);
-                self.userOutputTvShows = answerTvShows.data.results
-            });
+                    console.log(answerMovies.data.results);
+                    self.userOutputMovies = answerMovies.data.results
+
+                    self.userInput = '';
+                });
+
+                // tv shows
+                axios.get(self.api_root + '/search/tv', {
+                    params: {
+                        api_key: self.api_key,
+                        query: self.userInput.trim()
+                    }
+                }).then(function(answerTvShows){
+
+                    self.checkTvShows = true;
+
+                    console.log(answerTvShows.data.results);
+                    self.userOutputTvShows = answerTvShows.data.results
+
+                    self.userInput = '';
+                });
+            }
         },
         starsCounter: function(item, j){
             // inserire qui la base attraverso la quale rappresentare il punteggio del film
@@ -101,6 +125,30 @@ var app = new Vue({
             } else {
                 return 'far fa-star'
             }
+        },
+        closeBtn: function(){
+            this.botHelper = null;
+            this.userInput = '';
+        },
+        toggleSearch: function(){
+            if (this.toggleBtn == false) {
+                this.toggleBtn = true
+            } else {
+                this.toggleBtn = false
+            }
+        },
+        headerOnScroll: function(event){
+            window.addEventListener('scroll', function(){
+
+                console.log(window.scrollY);
+
+                if (window.scrollY > 20) {
+                    app.headerAnimation = true;
+                } else {
+                    app.headerAnimation = false;
+                }
+            })
         }
+
     }
 });
