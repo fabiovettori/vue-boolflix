@@ -30,6 +30,8 @@ var app = new Vue({
         checkTvShows: false,
         botHelper: null,
         toggleBtn: false,
+        pop: false,
+        popContainer: false,
         headerAnimation: false
     },
     mounted: function(){
@@ -137,18 +139,32 @@ var app = new Vue({
                 this.toggleBtn = false
             }
         },
-        headerOnScroll: function(event){
-            window.addEventListener('scroll', function(){
+        togglePopUp: function(){
+            if (this.popContainer == false) {
+                this.popContainer = true
+            } else {
+                this.popContainer = false
+            }
+        },
+        closePop: function(){
+            this.popContainer = false
+        },
+        headerOnScroll: function(){
+            let lastScrollY = 0;
 
-                console.log(window.scrollY);
+            let self = this;
+            window.addEventListener("scroll", function(){
+            let scrollUserY = window.scrollY;
 
-                if (window.scrollY > 20) {
-                    app.headerAnimation = true;
-                } else {
-                    app.headerAnimation = false;
-                }
-            })
+            if (scrollUserY > lastScrollY){
+               self.headerAnimation = true;
+              // console.log('down');
+            } else {
+               self.headerAnimation = false;
+              // console.log('up');
+            }
+               lastScrollY = scrollUserY <= 0 ? 0 : scrollUserY;
+            });
         }
-
     }
 });

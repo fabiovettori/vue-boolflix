@@ -60,6 +60,10 @@ h5 {
     color: rgba(0, 0, 0, 0.6);
 }
 
+#root {
+    position: relative;
+}
+
 /* header */
 header {
     position: fixed;
@@ -379,6 +383,54 @@ button:focus {
 .card .lang span{
     text-transform: uppercase;
     vertical-align: middle;
+}
+
+/* select-preview */
+.pop-container {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .3s ease;
+}
+
+.pop-container.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+.select-preview {
+    position: absolute;
+    width: 800px;
+    height: 600px;
+    background-color: #ffffff;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.select-preview > div {
+    float: left;
+    height: 100%;
+    width: 50%;
+}
+
+.select-preview div:first-of-type {
+    background-color: lightgrey;
+}
+
+.select-preview span {
+    position: absolute;
+    color: rgba(0, 0, 0, 0.5);
+    font-weight: lighter;
+    font-size: 25px;
+    right: 15px;
+    top: 10px;
+    cursor: pointer;
 }
 
 /* footer */

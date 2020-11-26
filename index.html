@@ -45,108 +45,123 @@
                 </div>
             </header>
 
-            <div class="hero-section wrapper">
-                <div>
-                    <h2>Benvenuto.</h2>
-                    <h3>Milioni di film, serie TV e persone da scoprire. Esplora ora.
-                    </h3>
-                    <div class="finder-input">
-                        <input type="text" name="" value="" placeholder="Cerca un film, serie tv, personagio..." v-model="userInput" ref="toggle-search" @keyup.enter="ajax()">
-                        <button @click="ajax()">Search</button>
+            <main>
+                <div class="hero-section wrapper">
+                    <div>
+                        <h2>Benvenuto.</h2>
+                        <h3>Milioni di film, serie TV e persone da scoprire. Esplora ora.
+                        </h3>
+                        <div class="finder-input">
+                            <input type="text" name="" value="" placeholder="Cerca un film, serie tv, personagio..." v-model="userInput" ref="toggle-search" @keyup.enter="ajax()">
+                            <button @click="ajax()">Search</button>
 
-                        <!-- Helper -->
-                        <div class="bot" :class="botHelper == true? 'active' : ''">
-                            <p>Howdy 👋, do you need help? sorry these special characters are not allowed:</p>
-                            <strong>#, @, ; , (double space)</strong>
-                            <span @click="closeBtn()" class="bot-close btn">&#10005;</span>
+                            <!-- Helper -->
+                            <div class="bot" :class="botHelper == true? 'active' : ''">
+                                <p>Howdy 👋, do you need help? sorry these special characters are not allowed:</p>
+                                <strong>#, @, ; , (double space)</strong>
+                                <span @click="closeBtn()" class="bot-close btn">&#10005;</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <h2 class="search-title wrapper" v-if="checkMovies">Search Results: Movies - <span>{{ userOutputMovies.length }} results for "{{ userOutputString }}"</span> </h2>
-            <div class="finder-output movies wrapper">
-                <ul class="card" v-for="(output, i) in userOutputMovies">
-                    <li>
-                        <img :src="output.poster_path != null ? ('https://image.tmdb.org/t/p/w185/' + output.poster_path) : 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg'" :alt="output.title" :class="output.poster_path == null ? 'no_poster' : ''">
-                    </li>
-                    <li>
-                        <h4>{{ output.title }}</h4>
-                        <h5>({{ output.original_title }})</h5>
-                    </li>
-                    <li class="lang">Language:
-                        <div>
-                            <img
-                            class="flag" :src="lang(output.original_language)"/>
-                            <span>{{ output.original_language }}</span>
-                        </div>
-                    </li>
-                    <li class="score">
-                        <span :class="starsCounter(output, j)" v-for="j in 5"></span>
-                    </li>
-                </ul>
-            </div>
+                <h2 class="search-title wrapper" v-if="checkMovies">Search Results: Movies - <span>{{ userOutputMovies.length }} results for "{{ userOutputString }}"</span> </h2>
+                <div class="finder-output movies wrapper">
+                    <ul class="card" v-for="(output, i) in userOutputMovies" @click="togglePopUp()">
+                        <li>
+                            <img :src="output.poster_path != null ? ('https://image.tmdb.org/t/p/w185/' + output.poster_path) : 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg'" :alt="output.title" :class="output.poster_path == null ? 'no_poster' : ''">
+                        </li>
+                        <li>
+                            <h4>{{ output.title }}</h4>
+                            <h5>({{ output.original_title }})</h5>
+                        </li>
+                        <li class="lang">Language:
+                            <div>
+                                <img
+                                class="flag" :src="lang(output.original_language)"/>
+                                <span>{{ output.original_language }}</span>
+                            </div>
+                        </li>
+                        <li class="score">
+                            <span :class="starsCounter(output, j)" v-for="j in 5"></span>
+                        </li>
+                    </ul>
+                </div>
 
-            <h2 class="search-title wrapper" v-if="checkTvShows">Search Results: TV Shows - <span>{{ userOutputTvShows.length }} results for "{{ userOutputString }}"</span></h2>
-            <div class="finder-output tvshows wrapper">
-                <ul class="card" v-for="(output, i) in userOutputTvShows">
-                    <li>
-                        <img :src="output.poster_path != null ? ('https://image.tmdb.org/t/p/w185/' + output.poster_path) : 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg'" :alt="output.title" :class="output.poster_path == null ? 'no_poster' : ''">
-                    </li>
-                    <li>
-                        <h4>{{ output.name }}</h4>
-                        <h5>({{ output.original_name }})</h5>
-                    </li>
-                    <li class="lang">Language:
+                <h2 class="search-title wrapper" v-if="checkTvShows">Search Results: TV Shows - <span>{{ userOutputTvShows.length }} results for "{{ userOutputString }}"</span></h2>
+                <div class="finder-output tvshows wrapper">
+                    <ul class="card" v-for="(output, i) in userOutputTvShows" @click="togglePopUp()">
+                        <li>
+                            <img :src="output.poster_path != null ? ('https://image.tmdb.org/t/p/w185/' + output.poster_path) : 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg'" :alt="output.title" :class="output.poster_path == null ? 'no_poster' : ''">
+                        </li>
+                        <li>
+                            <h4>{{ output.name }}</h4>
+                            <h5>({{ output.original_name }})</h5>
+                        </li>
+                        <li class="lang">Language:
+                            <div>
+                                <img
+                                class="flag" :src="lang(output.original_language)"/>
+                                <span>{{ output.original_language }}</span>
+                            </div>
+                        </li>
+                        <li class="score">
+                            <span :class="starsCounter(output, j)" v-for="j in 5"></span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="pop-container" :class="popContainer == true ? 'active' : ''">
+                    <div class="select-preview">
                         <div>
-                            <img
-                            class="flag" :src="lang(output.original_language)"/>
-                            <span>{{ output.original_language }}</span>
+                            <img src="" alt="">
                         </div>
-                    </li>
-                    <li class="score">
-                        <span :class="starsCounter(output, j)" v-for="j in 5"></span>
-                    </li>
-                </ul>
-            </div>
+
+                        <div>
+                            <!-- descrizione -->
+                        </div>
+                        <span @click="closePop()" class="pop-close btn">&#10005;</span>
+                    </div>
+                </div>
+            </main>
+
+            <footer>
+                <div class="wrapper">
+                    <ul>
+                        <li><a href="#"><img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3ded904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg" alt=""></a></li>
+                        <button>unisciti al gruppo</button>
+                    </ul>
+                    <ul>
+                        <li>le basi</li>
+                        <li><a href="#">Info su TMDb</a></li>
+                        <li><a href="#">Contattaci</a></li>
+                        <li><a href="#">Forum di supporto</a></li>
+                        <li><a href="#">API</a></li>
+                        <li><a href="#">System Status</a></li>
+                    </ul>
+                    <ul>
+                        <li>mettersi in gioco</li>
+                        <li><a href="#">Guida Contributi</a></li>
+                        <li><a href="#">Applicazioni di terze parti</a></li>
+                        <li><a href="#">Aggiungi nuovo film</a></li>
+                        <li><a href="#">Aggiungi nuova serie TV</a></li>
+                    </ul>
+                    <ul>
+                        <li>community</li>
+                        <li><a href="#">linee guida</a></li>
+                        <li><a href="#">discussioni</a></li>
+                        <li><a href="#">classifica</a></li>
+                        <li><a href="#">twitter</a></li>
+                    </ul>
+                    <ul>
+                        <li>legale</li>
+                        <li><a href="#">Condizioni d'uso</a></li>
+                        <li><a href="#">Termini d'uso delle API</a></li>
+                        <li><a href="#">Politica Privacy</a></li>
+                    </ul>
+                </div>
+            </footer>
         </div>
-
-        <footer>
-            <div class="wrapper">
-                <ul>
-                    <li><a href="#"><img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3ded904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg" alt=""></a></li>
-                    <button>unisciti al gruppo</button>
-                </ul>
-                <ul>
-                    <li>le basi</li>
-                    <li><a href="#">Info su TMDb</a></li>
-                    <li><a href="#">Contattaci</a></li>
-                    <li><a href="#">Forum di supporto</a></li>
-                    <li><a href="#">API</a></li>
-                    <li><a href="#">System Status</a></li>
-                </ul>
-                <ul>
-                    <li>mettersi in gioco</li>
-                    <li><a href="#">Guida Contributi</a></li>
-                    <li><a href="#">Applicazioni di terze parti</a></li>
-                    <li><a href="#">Aggiungi nuovo film</a></li>
-                    <li><a href="#">Aggiungi nuova serie TV</a></li>
-                </ul>
-                <ul>
-                    <li>community</li>
-                    <li><a href="#">linee guida</a></li>
-                    <li><a href="#">discussioni</a></li>
-                    <li><a href="#">classifica</a></li>
-                    <li><a href="#">twitter</a></li>
-                </ul>
-                <ul>
-                    <li>legale</li>
-                    <li><a href="#">Condizioni d'uso</a></li>
-                    <li><a href="#">Termini d'uso delle API</a></li>
-                    <li><a href="#">Politica Privacy</a></li>
-                </ul>
-            </div>
-        </footer>
 
         <script src="main.js" charset="utf-8"></script>
     </body>
