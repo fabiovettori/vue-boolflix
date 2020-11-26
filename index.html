@@ -41,7 +41,7 @@
                 </div>
 
                 <div class="toggle-search" v-if="toggleBtn == true" :class="headerAnimation == true ? 'hide' : ''">
-                    <input type="text" class="wrapper" placeholder="Cerca un film, serie tv, personagio..." v-model="userInput" ref="input" @keyup.enter="ajax()">
+                    <input type="text" class="wrapper" placeholder="Cerca un film, serie tv, personagio..." v-model="userInput" ref="toggle-search" @keyup.enter="ajax()">
                 </div>
             </header>
 
@@ -51,7 +51,7 @@
                     <h3>Milioni di film, serie TV e persone da scoprire. Esplora ora.
                     </h3>
                     <div class="finder-input">
-                        <input type="text" name="" value="" placeholder="Cerca un film, serie tv, personagio..." v-model="userInput" ref="input" @keyup.enter="ajax()">
+                        <input type="text" name="" value="" placeholder="Cerca un film, serie tv, personagio..." v-model="userInput" ref="toggle-search" @keyup.enter="ajax()">
                         <button @click="ajax()">Search</button>
 
                         <!-- Helper -->

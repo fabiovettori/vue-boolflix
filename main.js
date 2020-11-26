@@ -76,7 +76,7 @@ var app = new Vue({
                 this.botHelper = true;
             } else {
 
-                this.userOutputString = this.$refs["input"].value;
+                this.userOutputString = this.$refs["toggle-search"].value;
 
                 // movies
                 let self = this;
