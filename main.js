@@ -173,11 +173,13 @@ var app = new Vue({
             let scoreBaseFive = Math.round(item.vote_average * (baseOfScore * 0.1))
             // console.log(scoreBaseFive);
 
+            let classStar = '';
             if (scoreBaseFive >= j || scoreBaseFive == baseOfScore) {
-                return 'fas fa-star'
+                classStar = 'fas fa-star'
             } else {
-                return 'far fa-star'
+                classStar = 'far fa-star'
             }
+            return classStar
         },
         closeBtn: function(){
             this.botHelper = null;
@@ -247,17 +249,19 @@ var app = new Vue({
         circleRate: function(output, item){
             let scoreBase100 = output[item].vote_average * 10;
 
-            let deg = 360 * scoreBase100 * 0.01;
+            /* 10% = 126deg = 90 + ( 360 * .1 ) */
+            let deg = scoreBase100 * 0.01 * 360;
 
             let color = '';
-            if (scoreBase100 > 70) {
-                color = `backgroundColor: green; backgroundImage: linear-gradient(${deg}deg, transparent 50%, #081c22 50%),linear-gradient(90deg, #081c22 50%, transparent 50%)`;
-            } else if (scoreBase100 < 60){
-                color = `backgroundColor: red; backgroundImage: linear-gradient(${deg}deg, transparent 50%, #081c22 50%),linear-gradient(90deg, #081c22 50%, transparent 50%)`;
+            if (scoreBase100 >= 50) {
+                color = `backgroundColor: green; backgroundImage: linear-gradient(${deg - 90}deg, transparent 50%, green 50%),linear-gradient(90deg, #081c22 50%, transparent 50%)`;
             } else {
-                color = `backgroundColor: yellow; backgroundImage: linear-gradient(${deg}deg, transparent 50%, #081c22 50%),linear-gradient(90deg, #081c22 50%, transparent 50%)`;
+                color = `backgroundColor: yellow; backgroundImage: linear-gradient(${deg + 90}deg, transparent 50%, #081c22 50%),linear-gradient(90deg, #081c22 50%, transparent 50%)`;
             }
             return color
+        },
+        customDate: function(output, item, keyObject){
+            return moment(output[item].keyObject).format('DD MMMM, YYYY');
         }
     }
 });

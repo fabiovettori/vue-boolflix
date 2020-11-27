@@ -98,7 +98,7 @@
                 <div class="finder-output movies wrapper">
                     <ul class="card" v-for="(output, i) in userOutputMovies" @click="togglePopUp(i, userOutputMovies)">
                         <li>
-                            <img :src="output.poster_path != null ? ('https://image.tmdb.org/t/p/w185/' + output.poster_path) : 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg'" :alt="output.title" :class="output.poster_path == null ? 'no_poster' : ''">
+                            <img :src="output.poster_path != null ? ('https://image.tmdb.org/t/p/w185/' + output.poster_path) : 'https://cdn.bookauthority.org/dist/images/book-cover-not-available.6b5a104fa66be4eec4fd16aebd34fe04.png'" :alt="output.title" :class="output.poster_path == null ? 'no_poster' : ''">
 
                             <div class="circle-rate">
                                 <div class="sector-container">
@@ -113,7 +113,7 @@
                             <!-- <h5>({{ output.original_title }})</h5> -->
                         </li>
                         <li>
-                            <h5>{{ output.release_date }}</h5>
+                            <h5>{{ customDate(userOutputMovies, i, 'release_date') }}</h5>
                         </li>
                         <!-- <li class="lang">Language:
                             <div>
@@ -132,10 +132,10 @@
                 <div class="finder-output tvshows wrapper">
                     <ul class="card" v-for="(output, i) in userOutputTvShows" @click="togglePopUp(i, userOutputTvShows)">
                         <li>
-                            <img :src="output.poster_path != null ? ('https://image.tmdb.org/t/p/w185/' + output.poster_path) : 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg'" :alt="output.title" :class="output.poster_path == null ? 'no_poster' : ''">
+                            <img :src="output.poster_path != null ? ('https://image.tmdb.org/t/p/w185/' + output.poster_path) : 'https://cdn.bookauthority.org/dist/images/book-cover-not-available.6b5a104fa66be4eec4fd16aebd34fe04.png'" :alt="output.title" :class="output.poster_path == null ? 'no_poster' : ''">
 
                             <div class="circle-rate">
-                                <div class="sector" :style="circleRate(userOutputMovies, i)">
+                                <div class="sector" :style="circleRate(userOutputTvShows, i)">
                                     <span>{{ output.vote_average * 10 }}</span>
                                 </div>
                             </div>
@@ -145,7 +145,7 @@
                             <!-- <h5>({{ output.original_name }})</h5> -->
                         </li>
                         <li>
-                            <h5>{{ output.first_air_date }}</h5>
+                            <h5> {{ customDate(userOutputTvShows, i, 'first_air_date') }} </h5>
                         </li>
                         <!-- <li class="lang">Language:
                             <div>
@@ -163,7 +163,7 @@
                 <div @click="closePop()" class="pop-container" :class="popContainer == true ? 'active' : ''">
                     <div class="select-preview" v-if="activeSelection.item != -1">
                         <div class=left>
-                            <img :src="'https://image.tmdb.org/t/p/w500/' + activeSelection.container[activeSelection.item].poster_path" :alt="activeSelection.item != -1 ? activeSelection.container[activeSelection.item].title :  ''">
+                            <img :src="activeSelection.container[activeSelection.item].poster_path != null ? 'https://image.tmdb.org/t/p/w500/' + activeSelection.container[activeSelection.item].poster_path : 'https://cdn.bookauthority.org/dist/images/book-cover-not-available.6b5a104fa66be4eec4fd16aebd34fe04.png'" :alt="activeSelection.item != -1 ? activeSelection.container[activeSelection.item].title :  ''">
                         </div>
 
                         <div class="right">
@@ -181,7 +181,8 @@
                                     <span class="or_lang">{{ activeSelection.container[activeSelection.item].original_language }}</span>
 
                                     <h5>Release date.</h5>
-                                    <span>{{ activeSelection.container[activeSelection.item].hasOwnProperty('release_date') ? activeSelection.container[activeSelection.item].release_date : activeSelection.container[activeSelection.item].first_air_date }}</span>
+                                    <span v-if=" activeSelection.container[activeSelection.item].hasOwnProperty('release_date')">{{ customDate(activeSelection.container, activeSelection.item, 'release_date') }}</span>
+                                    <span v-else> {{ customDate(activeSelection.container, activeSelection.item, 'release_date') }} </span>
 
                                     <h5>Genre.</h5>
                                     <span>{{ userOutputGenres }}</span>

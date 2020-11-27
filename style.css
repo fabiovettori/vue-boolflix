@@ -369,7 +369,7 @@ button:focus {
 
 .card {
     margin: 10px;
-    height: 360px;
+    min-height: 335px;
     display: flex;
     flex-direction: column;
 }
@@ -496,7 +496,7 @@ button:focus {
     position: absolute;
     line-height: 6px;
     font-size: 7px;
-    right: 5px;
+    right: 3px;
     top: 8px;
     z-index: 3;
 }
