@@ -44,7 +44,8 @@ var app = new Vue({
             movies: [],
             tvshows: [],
             allGenres: []
-        }
+        },
+        colorRate: ''
     },
     mounted: function(){
         this.headerOnScroll()
@@ -220,8 +221,11 @@ var app = new Vue({
             }
         },
         closePop: function(){
-            this.popContainer = false
-            this.activeSelection.item = -1;
+
+            if (window.event.target.classList.contains('pop-container') || window.event.target.classList.contains('close-icon')) {
+                this.popContainer = false
+                this.activeSelection.item = -1;
+            }
         },
         headerOnScroll: function(){
             let lastScrollY = 0;
@@ -239,6 +243,21 @@ var app = new Vue({
             }
                lastScrollY = scrollUserY <= 0 ? 0 : scrollUserY;
             });
+        },
+        circleRate: function(output, item){
+            let scoreBase100 = output[item].vote_average * 10;
+
+            let deg = 360 * scoreBase100 * 0.01;
+
+            let color = '';
+            if (scoreBase100 > 70) {
+                color = `backgroundColor: green; backgroundImage: linear-gradient(${deg}deg, transparent 50%, #081c22 50%),linear-gradient(90deg, #081c22 50%, transparent 50%)`;
+            } else if (scoreBase100 < 60){
+                color = `backgroundColor: red; backgroundImage: linear-gradient(${deg}deg, transparent 50%, #081c22 50%),linear-gradient(90deg, #081c22 50%, transparent 50%)`;
+            } else {
+                color = `backgroundColor: yellow; backgroundImage: linear-gradient(${deg}deg, transparent 50%, #081c22 50%),linear-gradient(90deg, #081c22 50%, transparent 50%)`;
+            }
+            return color
         }
     }
 });

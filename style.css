@@ -362,7 +362,7 @@ button:focus {
     margin-top: 30px;
 }
 
-.search-title span{
+.search-title span {
     font-weight: 500;
     font-size: 18px;
 }
@@ -372,12 +372,28 @@ button:focus {
     height: 360px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+}
+
+.card h4 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-top: 20px;
+    white-space: normal;
+}
+
+.card h5 {
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 5px;
 }
 
 .card li {
     font-size: 12px;
     padding: 0;
+}
+
+.card li:first-of-type {
+    position: relative;
 }
 
 .card li:nth-of-type(2) {
@@ -436,6 +452,57 @@ button:focus {
     vertical-align: middle;
 }
 
+.circle-rate {
+    position: absolute;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    bottom: -16px;
+    left: 15px;
+    background-color: #081c22;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.circle-rate .sector {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.circle-rate .sector > span {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #081c22;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+    position: relative;
+    text-align: center;
+    line-height: 32px;
+    z-index: 3;
+}
+
+.circle-rate .sector > span::after {
+    content: '%';
+    display: inline-block;
+    position: absolute;
+    line-height: 6px;
+    font-size: 7px;
+    right: 5px;
+    top: 8px;
+    z-index: 3;
+}
+
+
+
 /* select-preview */
 .pop-container {
     position: fixed;
@@ -446,6 +513,7 @@ button:focus {
     background-color: rgba(0, 0, 0, 0.3);
     visibility: hidden;
     opacity: 0;
+    z-index: 4;
     transition: opacity .3s ease;
 }
 
@@ -483,6 +551,8 @@ button:focus {
 
 .select-preview .left img {
     height: 100%;
+    width: 100%;
+
 }
 
 .select-preview .right {
@@ -565,6 +635,10 @@ button:focus {
 .select-preview .right .top .fa-star {
     border: none;
     margin: 0 3px;
+}
+
+.select-preview .right .top .fa-star:first-of-type {
+    margin-left: 0;
 }
 
 /* footer */

@@ -9,11 +9,14 @@
 
         <script src="https://kit.fontawesome.com/efa78a0868.js"></script>
 
-        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;700&display=swap">
+
+        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.0/axios.min.js"></script>
 
         <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
         <link rel="stylesheet" href="style.css">
     </head>
@@ -96,21 +99,32 @@
                     <ul class="card" v-for="(output, i) in userOutputMovies" @click="togglePopUp(i, userOutputMovies)">
                         <li>
                             <img :src="output.poster_path != null ? ('https://image.tmdb.org/t/p/w185/' + output.poster_path) : 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg'" :alt="output.title" :class="output.poster_path == null ? 'no_poster' : ''">
+
+                            <div class="circle-rate">
+                                <div class="sector-container">
+                                    <div class="sector" :style="circleRate(userOutputMovies, i)">
+                                        <span>{{ output.vote_average * 10 }}</span>
+                                    </div>
+                                </div>
+                            </div>
                         </li>
                         <li>
                             <h4>{{ output.title }}</h4>
-                            <h5>({{ output.original_title }})</h5>
+                            <!-- <h5>({{ output.original_title }})</h5> -->
                         </li>
-                        <li class="lang">Language:
+                        <li>
+                            <h5>{{ output.release_date }}</h5>
+                        </li>
+                        <!-- <li class="lang">Language:
                             <div>
                                 <img
                                 class="flag" :src="lang(output.original_language)"/>
                                 <span>{{ output.original_language }}</span>
                             </div>
-                        </li>
-                        <li class="score">
+                        </li> -->
+                        <!-- <li class="score">
                             <span :class="starsCounter(output, j)" v-for="j in 5"></span>
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
 
@@ -119,25 +133,34 @@
                     <ul class="card" v-for="(output, i) in userOutputTvShows" @click="togglePopUp(i, userOutputTvShows)">
                         <li>
                             <img :src="output.poster_path != null ? ('https://image.tmdb.org/t/p/w185/' + output.poster_path) : 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg'" :alt="output.title" :class="output.poster_path == null ? 'no_poster' : ''">
+
+                            <div class="circle-rate">
+                                <div class="sector" :style="circleRate(userOutputMovies, i)">
+                                    <span>{{ output.vote_average * 10 }}</span>
+                                </div>
+                            </div>
                         </li>
                         <li>
                             <h4>{{ output.name }}</h4>
-                            <h5>({{ output.original_name }})</h5>
+                            <!-- <h5>({{ output.original_name }})</h5> -->
                         </li>
-                        <li class="lang">Language:
+                        <li>
+                            <h5>{{ output.first_air_date }}</h5>
+                        </li>
+                        <!-- <li class="lang">Language:
                             <div>
                                 <img
                                 class="flag" :src="lang(output.original_language)"/>
                                 <span>{{ output.original_language }}</span>
-                            </div>
+                            </div> -->
                         </li>
-                        <li class="score">
+                        <!-- <li class="score">
                             <span :class="starsCounter(output, j)" v-for="j in 5"></span>
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
 
-                <div class="pop-container" :class="popContainer == true ? 'active' : ''">
+                <div @click="closePop()" class="pop-container" :class="popContainer == true ? 'active' : ''">
                     <div class="select-preview" v-if="activeSelection.item != -1">
                         <div class=left>
                             <img :src="'https://image.tmdb.org/t/p/w500/' + activeSelection.container[activeSelection.item].poster_path" :alt="activeSelection.item != -1 ? activeSelection.container[activeSelection.item].title :  ''">
@@ -177,7 +200,7 @@
                                 <li><a href="#"><span class="fab fa-linkedin-in"></span></a></li>
                             </ul>
                         </div>
-                        <span @click="closePop()" class="pop-close btn">&#10005;</span>
+                        <span class="close-icon" @click="closePop()" class="pop-close btn">&#10005;</span>
                     </div>
                 </div>
             </main>
