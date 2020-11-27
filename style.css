@@ -177,6 +177,14 @@ header .finder img.active {
     top: 0;
 }
 
+header .hamb {
+    display: none;
+}
+
+header .fa-bars {
+    font-size: 24px;
+}
+
 /* dropdown */
 header .droppable {
     position: relative;
@@ -612,4 +620,14 @@ footer ul li:not( :first-of-type) {
     text-transform: capitalize;
     font-weight: 300;
     padding: 5px;
+}
+
+@media screen and (min-width: 1140px) {
+    header .hamb {
+        display: block;
+    }
+
+    header .fa-bars {
+        display: none;
+    }
 }
