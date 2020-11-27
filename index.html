@@ -25,10 +25,35 @@
                 <div class="wrapper">
                     <ul>
                         <li><img class="logo" src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg" alt="The Movie Database (TMDb)"></li>
-                        <li><a href="#">Film</a></li>
-                        <li><a href="#">Serie TV</a></li>
-                        <li><a href="#">Persone</a></li>
-                        <li><a href="#">More</a></li>
+                        <li class="droppable"><a href="#">Film</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Popolare</a></li>
+                                <li><a href="#">Adesso in onda</a></li>
+                                <li><a href="#">In Arrivo</a></li>
+                                <li><a href="#">Più Votati</a></li>
+                            </ul>
+                        </li>
+                        <li class="droppable"><a href="#">Serie TV</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Popolare</a></li>
+                                <li><a href="#">Oggi in onda</a></li>
+                                <li><a href="#">In TV</a></li>
+                                <li><a href="#">Più Votati</a></li>
+                            </ul>
+                        </li>
+                        <li class="droppable"><a href="#">Persone</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Popolare Popolari</a></li>
+                            </ul>
+                        </li>
+                        <li class="droppable"><a href="#">More</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Discussioni</a></li>
+                                <li><a href="#">Classifica</a></li>
+                                <li><a href="#">Supporto</a></li>
+                                <li><a href="#">API</a></li>
+                            </ul>
+                        </li>
                     </ul>
 
                     <ul>
@@ -67,7 +92,7 @@
 
                 <h2 class="search-title wrapper" v-if="checkMovies">Search Results: Movies - <span>{{ userOutputMovies.length }} results for "{{ userOutputString }}"</span> </h2>
                 <div class="finder-output movies wrapper">
-                    <ul class="card" v-for="(output, i) in userOutputMovies" @click="togglePopUp()">
+                    <ul class="card" v-for="(output, i) in userOutputMovies" @click="togglePopUp(i, userOutputMovies)">
                         <li>
                             <img :src="output.poster_path != null ? ('https://image.tmdb.org/t/p/w185/' + output.poster_path) : 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg'" :alt="output.title" :class="output.poster_path == null ? 'no_poster' : ''">
                         </li>
@@ -90,7 +115,7 @@
 
                 <h2 class="search-title wrapper" v-if="checkTvShows">Search Results: TV Shows - <span>{{ userOutputTvShows.length }} results for "{{ userOutputString }}"</span></h2>
                 <div class="finder-output tvshows wrapper">
-                    <ul class="card" v-for="(output, i) in userOutputTvShows" @click="togglePopUp()">
+                    <ul class="card" v-for="(output, i) in userOutputTvShows" @click="togglePopUp(i, userOutputTvShows)">
                         <li>
                             <img :src="output.poster_path != null ? ('https://image.tmdb.org/t/p/w185/' + output.poster_path) : 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg'" :alt="output.title" :class="output.poster_path == null ? 'no_poster' : ''">
                         </li>
@@ -112,13 +137,44 @@
                 </div>
 
                 <div class="pop-container" :class="popContainer == true ? 'active' : ''">
-                    <div class="select-preview">
-                        <div>
-                            <img src="" alt="">
+                    <div class="select-preview" v-if="activeSelection.item != -1">
+                        <div class=left>
+                            <img :src="'https://image.tmdb.org/t/p/w500/' + activeSelection.container[activeSelection.item].poster_path" :alt="activeSelection.item != -1 ? activeSelection.container[activeSelection.item].title :  ''">
                         </div>
 
-                        <div>
-                            <!-- descrizione -->
+                        <div class="right">
+                            <div class="top">
+                                <h3>{{ activeSelection.container[activeSelection.item].hasOwnProperty('title') ?  activeSelection.container[activeSelection.item].title : activeSelection.container[activeSelection.item].name }}</h3>
+
+                                <h5>Story.</h5>
+                                <p>{{ activeSelection.container[activeSelection.item].overview }}</p>
+
+                                <div class="more-info">
+                                    <h5>Original title.</h5>
+                                    <span>{{ activeSelection.container[activeSelection.item].hasOwnProperty('original_title') ? activeSelection.container[activeSelection.item].original_title : activeSelection.container[activeSelection.item].original_name}}</span>
+
+                                    <h5>Original language.</h5>
+                                    <span class="or_lang">{{ activeSelection.container[activeSelection.item].original_language }}</span>
+
+                                    <h5>Release date.</h5>
+                                    <span>{{ activeSelection.container[activeSelection.item].hasOwnProperty('release_date') ? activeSelection.container[activeSelection.item].release_date : activeSelection.container[activeSelection.item].first_air_date }}</span>
+
+                                    <h5>Genre.</h5>
+                                    <span>{{ userOutputGenres }}</span>
+
+                                    <h5>Rating</h5>
+                                    <span><span :class="starsCounter(activeSelection.container[activeSelection.item], j)" v-for="j in 5"></span></span>
+                                </div>
+                            </div>
+
+                            <ul class="bottom social-icons">
+                                <li><a href="#"><span class="fab fa-facebook-f"></span></a></li>
+                                <li><a href="#"><span class="fab fa-instagram"></span></a></li>
+                                <li><a href="#"><span class="fab fa-tiktok"></span></a></li>
+                                <li><a href="#"><span class="fab fa-youtube"></span> </a></li>
+                                <li><a href="#"><span class="fab fa-twitter"></span></a></li>
+                                <li><a href="#"><span class="fab fa-linkedin-in"></span></a></li>
+                            </ul>
                         </div>
                         <span @click="closePop()" class="pop-close btn">&#10005;</span>
                     </div>

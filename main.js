@@ -26,16 +26,28 @@ var app = new Vue({
         userOutputString: '',
         userOutputMovies: [],
         userOutputTvShows: [],
+        userOutputGenres: '',
         checkMovies: false,
         checkTvShows: false,
+        checkGenresMovies: false,
+        checkGenresTvShows: false,
         botHelper: null,
         toggleBtn: false,
         pop: false,
         popContainer: false,
-        headerAnimation: false
+        headerAnimation: false,
+        activeSelection: {
+            item: -1,
+            container: []
+        },
+        genres: {
+            movies: [],
+            tvshows: [],
+            allGenres: []
+        }
     },
     mounted: function(){
-        this.headerOnScroll(event)
+        this.headerOnScroll()
     },
     methods: {
         lang: function(language){
@@ -78,7 +90,8 @@ var app = new Vue({
                 this.botHelper = true;
             } else {
 
-                this.userOutputString = this.$refs["toggle-search"].value;
+                this.userOutputString = this.userInput;
+                // this.userOutputString = this.$refs["toggle-search"].value;
 
                 // movies
                 let self = this;
@@ -95,6 +108,7 @@ var app = new Vue({
                     self.userOutputMovies = answerMovies.data.results
 
                     self.userInput = '';
+
                 });
 
                 // tv shows
@@ -109,6 +123,42 @@ var app = new Vue({
 
                     console.log(answerTvShows.data.results);
                     self.userOutputTvShows = answerTvShows.data.results
+
+                    self.userInput = '';
+                });
+
+                // movies genres list
+                axios.get(self.api_root + '/genre/movie/list', {
+                    params: {
+                        api_key: self.api_key,
+                        language: 'en'
+                    }
+                }).then(function(answerMoviesGenresList){
+
+                    self.checkGenresMovies = true;
+
+                    console.log(answerMoviesGenresList.data.genres);
+                    self.genres.movies = answerMoviesGenresList.data.genres
+
+                    self.genres.allGenres = self.genres.allGenres.concat(self.genres.movies)
+
+                    self.userInput = '';
+                });
+
+                // tv shows genres list
+                axios.get(self.api_root + '/genre/tv/list', {
+                    params: {
+                        api_key: self.api_key,
+                        language: 'en'
+                    }
+                }).then(function(answerTvShosGenresList){
+
+                    self.checkGenresTvShows = true;
+
+                    console.log(answerTvShosGenresList.data.genres);
+                    self.genres.tvshows = answerTvShosGenresList.data.genres
+
+                    self.genres.allGenres = self.genres.allGenres.concat(self.genres.tvshows)
 
                     self.userInput = '';
                 });
@@ -139,7 +189,30 @@ var app = new Vue({
                 this.toggleBtn = false
             }
         },
-        togglePopUp: function(){
+        togglePopUp: function(i, container){
+
+            // console.log(i, container);
+            this.activeSelection.item = i;
+            this.activeSelection.container = container;
+
+            let activeItem = this.activeSelection.container[this.activeSelection.item];
+
+            let activeItemGenres = activeItem.genre_ids;
+            // console.log(activeItemGenres);
+
+            let genres = [];
+            for (var i = 0; i < activeItemGenres.length; i++) {
+
+                for (var j = 0; j < app.genres.allGenres.length; j++) {
+
+                    if (activeItemGenres[i] == app.genres.allGenres[j].id && !genres.includes(app.genres.allGenres[j].name)) {
+                        genres.push(app.genres.allGenres[j].name)
+                    }
+                }
+            }
+
+            this.userOutputGenres = genres.join(', ');
+
             if (this.popContainer == false) {
                 this.popContainer = true
             } else {
@@ -148,6 +221,7 @@ var app = new Vue({
         },
         closePop: function(){
             this.popContainer = false
+            this.activeSelection.item = -1;
         },
         headerOnScroll: function(){
             let lastScrollY = 0;
