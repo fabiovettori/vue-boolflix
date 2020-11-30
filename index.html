@@ -96,7 +96,7 @@
 
                 <h2 class="search-title wrapper" v-if="checkMovies">Search Results: Movies - <span>{{ userOutputMovies.length }} results for "{{ userOutputString }}"</span> </h2>
                 <div class="finder-output movies wrapper">
-                    <ul class="card" v-for="(output, i) in userOutputMovies" @click="togglePopUp(i, userOutputMovies)">
+                    <ul class="card" v-for="(output, i) in userOutputMovies" @click="togglePopUp(i, userOutputMovies, 'movie')">
                         <li>
                             <img :src="output.poster_path != null ? ('https://image.tmdb.org/t/p/w185/' + output.poster_path) : 'https://cdn.bookauthority.org/dist/images/book-cover-not-available.6b5a104fa66be4eec4fd16aebd34fe04.png'" :alt="output.title" :class="output.poster_path == null ? 'no_poster' : ''">
 
@@ -130,7 +130,7 @@
 
                 <h2 class="search-title wrapper" v-if="checkTvShows">Search Results: TV Shows - <span>{{ userOutputTvShows.length }} results for "{{ userOutputString }}"</span></h2>
                 <div class="finder-output tvshows wrapper">
-                    <ul class="card" v-for="(output, i) in userOutputTvShows" @click="togglePopUp(i, userOutputTvShows)">
+                    <ul class="card" v-for="(output, i) in userOutputTvShows" @click="togglePopUp(i, userOutputTvShows, 'tv')">
                         <li>
                             <img :src="output.poster_path != null ? ('https://image.tmdb.org/t/p/w185/' + output.poster_path) : 'https://cdn.bookauthority.org/dist/images/book-cover-not-available.6b5a104fa66be4eec4fd16aebd34fe04.png'" :alt="output.title" :class="output.poster_path == null ? 'no_poster' : ''">
 
@@ -178,7 +178,7 @@
                                     <span>{{ activeSelection.container[activeSelection.item].hasOwnProperty('original_title') ? activeSelection.container[activeSelection.item].original_title : activeSelection.container[activeSelection.item].original_name}}</span>
 
                                     <h5>Original language.</h5>
-                                    <span class="or_lang">{{ activeSelection.container[activeSelection.item].original_language }}</span>
+                                    <span class="or_lang">{{ isoCodeToLang(activeSelection.container[activeSelection.item].original_language) }}</span>
 
                                     <h5>Release date.</h5>
                                     <span v-if=" activeSelection.container[activeSelection.item].hasOwnProperty('release_date')">{{ customDate(activeSelection.container, activeSelection.item, 'release_date') }}</span>
@@ -186,6 +186,11 @@
 
                                     <h5>Genre.</h5>
                                     <span>{{ userOutputGenres }}</span>
+
+                                    <h5 class="cast-title">Cast.
+                                        <span @click="seeMoreCast()">(see more)</span>
+                                    </h5>
+                                    <span><span class="cast">{{ castPreviewName() }}</span></span>
 
                                     <h5>Rating</h5>
                                     <span><span :class="starsCounter(activeSelection.container[activeSelection.item], j)" v-for="j in 5"></span></span>
@@ -201,6 +206,22 @@
                                 <li><a href="#"><span class="fab fa-linkedin-in"></span></a></li>
                             </ul>
                         </div>
+                        <section class="expand">
+                            <h2>key actors</h2>
+                            <div class="cards-actors container">
+                                <div v-for="actor in activeSelection.cast.fullCast" v-if="actor.profile_path != null">
+                                    <div class="card-actor">
+                                        <div>
+                                            <img :src="'https://image.tmdb.org/t/p/w185' + actor.profile_path" :alt="actor.name">
+                                        </div>
+                                        <div>
+                                            <h3>{{ actor.name }}</h3>
+                                            <h4>{{ actor.character }}</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
                         <span class="close-icon" @click="closePop()" class="pop-close btn">&#10005;</span>
                     </div>
                 </div>
@@ -244,6 +265,7 @@
             </footer>
         </div>
 
+        <script src="countries-language.js" charset="utf-8"></script>
         <script src="main.js" charset="utf-8"></script>
     </body>
 </html>

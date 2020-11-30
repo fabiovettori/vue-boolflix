@@ -38,14 +38,19 @@ var app = new Vue({
         headerAnimation: false,
         activeSelection: {
             item: -1,
-            container: []
+            container: [],
+            id: null,
+            cast: {
+                fullCast: [],
+                castSelection: []
+            }
         },
         genres: {
             movies: [],
             tvshows: [],
             allGenres: []
         },
-        colorRate: ''
+        colorRate: '',
     },
     mounted: function(){
         this.headerOnScroll()
@@ -63,6 +68,27 @@ var app = new Vue({
             }
 
             return this.flags_root + flag + '.svg';
+        },
+        isoCodeToLang: function(isoCode){
+            isoCode = isoCode.slice(0,2);
+    		var lang = isoLangs[isoCode];
+    		return lang ? lang.name : undefined;
+        },
+        ajax_extras: function(type){
+
+            // movies extras
+            let self = this;
+            axios.get(self.api_root + `/${type}/` + self.activeSelection.id, {
+                params: {
+                    api_key: self.api_key,
+                    append_to_response: 'credits'
+                }
+            }).then(function(answerMoviesExtras){
+
+                self.activeSelection.cast.fullCast = answerMoviesExtras.data.credits.cast;
+
+                self.castPreview()
+            });
         },
         ajax: function(){
             // devo passare nella API sempre
@@ -122,7 +148,7 @@ var app = new Vue({
 
                     self.checkTvShows = true;
 
-                    console.log(answerTvShows.data.results);
+                    // console.log(answerTvShows.data.results);
                     self.userOutputTvShows = answerTvShows.data.results
 
                     self.userInput = '';
@@ -138,7 +164,7 @@ var app = new Vue({
 
                     self.checkGenresMovies = true;
 
-                    console.log(answerMoviesGenresList.data.genres);
+                    // console.log(answerMoviesGenresList.data.genres);
                     self.genres.movies = answerMoviesGenresList.data.genres
 
                     self.genres.allGenres = self.genres.allGenres.concat(self.genres.movies)
@@ -156,7 +182,7 @@ var app = new Vue({
 
                     self.checkGenresTvShows = true;
 
-                    console.log(answerTvShosGenresList.data.genres);
+                    // console.log(answerTvShosGenresList.data.genres);
                     self.genres.tvshows = answerTvShosGenresList.data.genres
 
                     self.genres.allGenres = self.genres.allGenres.concat(self.genres.tvshows)
@@ -192,11 +218,13 @@ var app = new Vue({
                 this.toggleBtn = false
             }
         },
-        togglePopUp: function(i, container){
+        togglePopUp: function(i, container, type){
 
             // console.log(i, container);
             this.activeSelection.item = i;
             this.activeSelection.container = container;
+            this.activeSelection.id = container[i].id;
+            this.ajax_extras(type);
 
             let activeItem = this.activeSelection.container[this.activeSelection.item];
 
@@ -227,6 +255,8 @@ var app = new Vue({
             if (window.event.target.classList.contains('pop-container') || window.event.target.classList.contains('close-icon')) {
                 this.popContainer = false
                 this.activeSelection.item = -1;
+                this.activeSelection.cast.id = null;
+                this.activeSelection.cast.castSelection = [];
             }
         },
         headerOnScroll: function(){
@@ -262,6 +292,33 @@ var app = new Vue({
         },
         customDate: function(output, item, keyObject){
             return moment(output[item].keyObject).format('DD MMMM, YYYY');
+        },
+        castPreview: function(){
+            let fullCast = this.activeSelection.cast.fullCast;
+
+            let self = this;
+            for (var i = 0; i < 5; i++) {
+                let profile = {
+                    character: fullCast[i].character,
+                    name: fullCast[i].name,
+                    profile_path: fullCast[i].profile_path
+                }
+
+                self.activeSelection.cast.castSelection.push(profile);
+            }
+        },
+        castPreviewName: function(){
+            let cast = this.activeSelection.cast.castSelection;
+            let listActors = [];
+
+            cast.forEach((actor) => {
+                listActors.push(actor.name);
+            });
+            return listActors.join(', ')
+        },
+        seeMoreCast: function(){
+            document.querySelector('.select-preview').classList.toggle('expanded');
+            document.querySelector('.expand').classList.toggle('active');
         }
     }
 });

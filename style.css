@@ -447,9 +447,13 @@ button:focus {
     justify-content: space-between;
 }
 
-.card .lang span{
+.card .lang span {
     text-transform: uppercase;
     vertical-align: middle;
+}
+
+.card li img:hover ~ .circle-rate {
+    transform: scale(1.2);
 }
 
 .circle-rate {
@@ -463,13 +467,14 @@ button:focus {
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 0;
+    transition: transform .3s ease;
 }
 
 .circle-rate .sector {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    z-index: 2;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -487,7 +492,7 @@ button:focus {
     position: relative;
     text-align: center;
     line-height: 32px;
-    z-index: 3;
+    z-index: 0;
 }
 
 .circle-rate .sector > span::after {
@@ -498,10 +503,7 @@ button:focus {
     font-size: 7px;
     right: 3px;
     top: 8px;
-    z-index: 3;
 }
-
-
 
 /* select-preview */
 .pop-container {
@@ -531,12 +533,86 @@ button:focus {
     top: 50%;
     transform: translate(-50%, -50%);
     box-shadow: 0 5px 20px rgba(0,0,0,.1);
+    transition: transform .3s ease;
+}
+
+.select-preview.expanded {
+    transform: translate(calc(-50% - 200px), -50%);
 }
 
 .select-preview > div {
     float: left;
     height: 100%;
     width: 50%;
+}
+
+.select-preview .expand {
+    display: none;
+    background-color: #ffffff;;
+    position: absolute;
+    width: 400px;
+    height: 600px;
+    left: 800px;
+    padding: 50px 25px 30px;
+}
+
+.select-preview .expand > .cards-actors.container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 260px;
+    grid-gap: 15px;
+    width: 100%;
+    height: calc(100% - 40px);
+    overflow-y: auto;
+}
+
+.select-preview .expand h2 {
+    color: #000000;
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.select-preview .expand .card-actor {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.select-preview .expand .card-actor > div:first-of-type {
+    height: 75%;
+}
+
+.select-preview .expand .card-actor img {
+    width: 100%;
+    border-radius: 8px 8px 0 0;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 80%, 0% 80%);
+}
+
+
+.select-preview .expand .card-actor > div:last-of-type {
+    height: 25%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 15px;
+}
+
+.select-preview .expand h3 {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+}
+
+.select-preview .expand h4 {
+    font-size: 14px;
+    font-weight: lighter;
+    color: #000000;
+}
+
+.select-preview .expand.active {
+    display: block;
 }
 
 .select-preview > span {
@@ -552,7 +628,6 @@ button:focus {
 .select-preview .left img {
     height: 100%;
     width: 100%;
-
 }
 
 .select-preview .right {
@@ -592,7 +667,7 @@ button:focus {
     text-align: justify;
     text-justify: inter-word;
     margin-bottom: 20px;
-    max-height: 130px;
+    max-height: 90px;
     overflow-y: auto;
 }
 
@@ -629,7 +704,21 @@ button:focus {
 }
 
 .select-preview .right .or_lang {
-    text-transform: uppercase;
+    text-transform: capitalize;
+}
+
+.select-preview .right .top .cast {
+    font-size: 12px;
+    border-bottom: none;
+}
+
+.select-preview .right .top .cast-title span {
+    font-size: 12px;
+    font-weight: 500;
+    border-bottom: none;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    cursor: pointer;
 }
 
 .select-preview .right .top .fa-star {
