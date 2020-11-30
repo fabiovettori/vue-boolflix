@@ -558,10 +558,9 @@ button:focus {
 
 .select-preview .expand > .cards-actors.container {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 160px);
     grid-auto-rows: 260px;
     grid-gap: 15px;
-    width: 100%;
     height: calc(100% - 40px);
     overflow-y: auto;
 }
@@ -589,7 +588,6 @@ button:focus {
     border-radius: 8px 8px 0 0;
     clip-path: polygon(0% 0%, 100% 0%, 100% 80%, 0% 80%);
 }
-
 
 .select-preview .expand .card-actor > div:last-of-type {
     height: 25%;
